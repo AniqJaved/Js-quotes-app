@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <div class="container">
+        <div class="inner">
+            <div class="box">
+                <p class="number">
+                    <img src="images/logo.png" alt="" title="TweetMe" id="tweet"/>
+                </p>
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" class="quotes"></p>
+                    <p class="author" id="author"></p>
+                </div>
+
+                <label class="button" id="button">
+                    <p id="newQ">Click here
+                    </p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quote = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const buttonBot = document.getElementById("button");
+        const tweetMe = document.getElementById("tweet");
+
+        let realData = "";
+        let quotesData = "";
+        const tweetPost = () =>{
+            let tweet = `https://twitter.com/intent/tweet?text=${quotesData}`;
+            window.open(tweet);
+        }
+
+        const setQuotes = (realData) =>{
+            let randNum = Math.floor((Math.random() * 100) + 1);
+            console.log(randNum);
+            quotesData = realData[randNum].text;
+            quote.innerHTML = quotesData;
+            let name = realData[randNum].author;
+            author.innerHTML = name != null ? name : "Anonymus" ;
+        }
+
+
+        const getQuotes = async () =>{
+            const api = "https://type.fit/api/quotes";
+            try{
+                let data = await fetch(api);
+                realData = await data.json();
+                //console.log(realData[randNum].text);
+                setQuotes(realData);
+            }
+            catch (error){}
+        }
+        getQuotes();
+        buttonBot.addEventListener("click",getQuotes);
+        tweetMe.addEventListener("click",tweetPost);
+    </script>
+</body>
+</html>
